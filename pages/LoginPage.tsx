@@ -1,13 +1,11 @@
-
 import React, { useState } from 'react';
 import { School } from '../components/icons/Icons';
 import { Alert } from '../components/common/FormElements';
+import { apiRequest } from '../api';
 
 interface LoginPageProps {
   onLogin: (token: string) => void;
 }
-
-const API_BASE_URL = 'http://localhost:5000/api';
 
 const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   const [username, setUsername] = useState('');
@@ -21,24 +19,18 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: username, password }), // Backend uses email for login
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
-      }
+      // Use GET request with URL parameters for Back4App/Parse login
+      const endpoint = `login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+      const data = await apiRequest(endpoint, 'GET');
       
-      onLogin(data.token);
+      if (data && data.sessionToken) {
+        onLogin(data.sessionToken);
+      } else {
+        throw new Error('Login failed: Invalid credentials or server error.');
+      }
 
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || 'An unknown error occurred.');
     } finally {
       setIsLoading(false);
     }
@@ -67,7 +59,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                 id="username"
                 name="username"
                 type="text"
-                autoComplete="email"
+                autoComplete="username"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-sky-500 focus:border-sky-500 focus:z-10 sm:text-sm"
                 placeholder="Username or Email"
