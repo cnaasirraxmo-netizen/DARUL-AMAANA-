@@ -1,0 +1,40 @@
+{
+  "name": "sahan-service-backend",
+  "version": "1.0.0",
+  "description": "Backend for SAHAN Service (Darulamana) School Management System.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "seed": "node src/seed/seedAdmin.js",
+    "seed:dashboard": "node src/seed/seedDashboardData.js",
+    "seed:students": "node src/seed/seedStudentsAndClasses.js",
+    "seed:finance": "node src/seed/seedFinanceData.js",
+    "seed:certs": "node src/seed/seedCertificateTemplates.js"
+  },
+  "keywords": [
+    "express",
+    "mongoose",
+    "jwt",
+    "school-management"
+  ],
+  "author": "AI Assistant",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "csv-parse": "^5.5.6",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.3.1",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.4.4",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "winston": "^3.13.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
